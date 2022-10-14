@@ -8,17 +8,19 @@
 </head>
 <body>
 <div class="container">
-       <h1>Wellcome ${listPlayer.getName()} !</h1>
+       <h1>Wellcome!</h1>
     <div class="row">
         <div class="col-6">
             <h2>Please enter your number: </h2>
-            <form action="http://localhost:8085/game" method="get">
+            <form action="http://localhost:8085/doanSo/game?username=${username}" method="get">
                 <div class="mb-3">
                     <label class="form-label">Guess number </label>
                     <input type="text" class="form-control" name="number">
                 </div>
                 <input type="submit" value="submit" class="btn btn-primary" />
             </form>
+            <h2>Result: ${str}</h2>
+            ${tag}
         </div>
     </div>
     <table class="table">
@@ -30,7 +32,7 @@
         </tr>
         </thead>
         <tbody>
-            <c:forEach var = "i" begin="0" end="${listProduct.size()-1}">
+            <c:forEach var = "i" begin="0" end="${listProduct.size()}">
                 <tr>
                     <td>${i}</td>
                     <td>${listPlayer[i].getName()}</td>

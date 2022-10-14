@@ -1,6 +1,7 @@
 package com.guess.controller;
 
 import com.guess.model.Player;
+import com.guess.service.SortService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,33 +15,57 @@ import java.util.List;
 @WebServlet(name = "PlayGame",urlPatterns = "/game")
 public class PlayGame extends HttpServlet {
     List<Player> listPlayer= new ArrayList<>();
+    int seq=1;
+    double randomDouble = Math.random()* 1000 + 1;
+    int randomInt = (int) randomDouble;
+    String nameTemp="";
+    SortService sortService=new SortService();
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username=req.getParameter("username");
-        int number= Integer.parseInt(req.getParameter("number"));
-        double randomDouble = Math.random();
-        randomDouble = randomDouble * 1000 + 1;
-        int randomInt = (int) randomDouble;
+        String tag="";
         Player player =new Player();
-        player.setName(username);
-        player.setSeq(1);
-        String str;
-        if (number ==randomInt){
-            str="Congratulations !";
-            listPlayer.add(player);
-        }
-        else{
-            if (number<randomInt){
-                str="Number is less";
-                player.setSeq(player.getSeq()+1);
+        if (username!=null){
+            nameTemp=username;
 
-            }
-            else if (number>randomInt){
-                str="Number is bigger";
-                player.setSeq(player.getSeq()+1);
-
-            }
         }
+            int number= Integer.parseInt(req.getParameter("number"));
+            player.setName(nameTemp);
+            player.setSeq(seq);
+            String str="";
+            System.out.printf(""+randomInt+username+number);
+            if (number ==randomInt){
+                str="Congratulations !";
+                listPlayer.add(player);
+                nameTemp="";
+//                tag="<h2 lass=\"mb-3\">Please enter your name to continue.</h2>\n" +
+//                        "        <form action=\"http://localhost:8085/doanSo/game\" method=\"get\">\n" +
+//                        "          <div class=\"mb-3\">\n" +
+//                        "            <input type=\"text\" class=\"form-control w-25\" id=\"exampleInputEmail1\" name=\"username\">\n" +
+//                        "          </div>\n" +
+//                        "\n" +
+//                        "          <button type=\"submit\" class=\"btn btn-primary\">Continue</button>\n" +
+//                        "        </form>";
+
+                seq=1;
+            }
+            else{
+                if (number<randomInt){
+                    str="Number is less";
+
+                    seq+=1;
+
+                }
+                else if (number>randomInt){
+                    str="Number is bigger";
+                    seq+=1;
+
+                }
+            }
+            req.setAttribute("tag",tag);
+            req.setAttribute("str",str);
+        sortService.insertionSort(listPlayer);
         req.setAttribute("listPlayer",listPlayer);
         req.getRequestDispatcher("webapp/playGame.jsp").forward(req,resp);
     }
