@@ -21,9 +21,9 @@
     <div class="wellcome">
         <h1>Wellcome!</h1>
         <h2 lass="mb-3">Please enter your name to continue.</h2>
-        <form>
+        <form action="http://localhost:8085/home-page" method="get">
           <div class="mb-3">
-            <input type="text" class="form-control w-25" id="exampleInputEmail1" >
+            <input type="text" class="form-control w-25" id="exampleInputEmail1" name="username">
           </div>
 
           <button type="submit" class="btn btn-primary">Continue</button>
